@@ -16,7 +16,7 @@ const Page = () => {
     if (error?.message === "Invalid login credentials") {
       alert("Invalid login credentials!");
     } else {
-      router.push("/auth/login");
+      router.push("/freelance/dashboard");
     }
   };
   useEffect(() => setMounted(true), []);
