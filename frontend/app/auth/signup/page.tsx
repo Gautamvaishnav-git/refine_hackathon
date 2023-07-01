@@ -21,24 +21,16 @@ const Page = () => {
         emailRedirectTo: `${window.location.origin}/auth/verify`,
       },
     });
-    console.log(response);
+    console.log("🟢 ~ file: page.tsx:25 ~ Register ~ response.error?.message:", response.error?.message)
+    console.log("🟢 ~ file: page.tsx:27 ~ Register ~ response.data:", response.data)
     alert(JSON.stringify(response.data.user));
     router.refresh();
   };
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
   return (
     <div className="p-4">
-      <h1 className="p-4">Login</h1>
-      <button
-        className="btn_primary"
-        onClick={Register}
-      >
+      <h1 className="p-4">sign up</h1>
+      <button className="btn_primary" onClick={Register}>
         Register to see the dashboard
       </button>
     </div>

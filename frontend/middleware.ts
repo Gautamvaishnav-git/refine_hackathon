@@ -51,6 +51,7 @@ const middleware = async (req: NextRequest) => {
   if (user && path === "/auth/login") {
     return NextResponse.redirect(new URL("/freelance/dashboard", requestUrl));
   }
+
   if (!user && path !== "/auth/login" && path !== "/auth/signup") {
     return NextResponse.redirect(new URL("/auth/login", requestUrl));
   }
@@ -63,8 +64,7 @@ export const config = {
     "/freelance/:path*",
     "/jobseeker/:path*",
     "/",
-    "/auth/login",
-    "/auth/signup",
+    "/auth/:path*",
   ],
 };
 export default middleware;
