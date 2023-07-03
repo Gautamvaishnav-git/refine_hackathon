@@ -16,11 +16,14 @@ const Page = () => {
       }),
       {
         pending: "You are logging in...",
-        success: "Logged in successfully!",
       }
     );
-    if (error?.message === "Invalid login credentials") {
-      toast.error("Invalid login credentials!");
+    if (error) {
+      if (error?.message === "Invalid login credentials") {
+        toast.error("Invalid login credentials!");
+      } else if (error?.message === "Failed to fetch") {
+        toast.error("Failed to fetch! please check network connection.");
+      }
     } else {
       router.refresh();
     }

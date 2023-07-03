@@ -1,5 +1,8 @@
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
+
+
 
 const Login = ({ login }: { login: () => void }) => {
   return (
@@ -8,14 +11,22 @@ const Login = ({ login }: { login: () => void }) => {
         <h1 className="text-3xl text-white font-bold text-left pb-4">
           Login to access application.
         </h1>
-        <input type="email" required className="p-2 rounded outline-none bg-transparent autofill:bg-transparent border border-white/30 text-white" />
-        <input type="password" required className="p-2 rounded outline-none bg-transparent autofill:bg-transparent border border-white/30 text-white" />
-        <button className="btn_primary" onClick={login}>
+        <input
+          type="email"
+          required
+          className="p-2 rounded outline-none bg-transparent autofill:bg-transparent border border-white/30 text-white"
+        />
+        <input
+          type="password"
+          required
+          className="p-2 rounded outline-none bg-transparent autofill:bg-transparent border border-white/30 text-white"
+        />
+        <Button variant={"outline"}  className="bg-transparent backdrop-blur-sm text-primary-foreground border-primary-foreground/20" onClick={login}>
           Login
-        </button>
+        </Button>
         <div className="flex items-center justify-between text-white">
           <span>{"don't"} have an account?</span>
-          <Link href="/auth/signup" >Signup</Link>
+          <Link href="/auth/signup">Signup</Link>
         </div>
       </div>
     </div>

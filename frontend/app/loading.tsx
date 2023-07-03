@@ -1,5 +1,7 @@
+import Loader from "@/app/shared/Loader";
+
 const page = () => {
-  return <div>loading...</div>;
+  return <Loader />;
 };
 
 export default page;
