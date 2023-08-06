@@ -26,8 +26,7 @@ interface IProp<T extends string> {
 
 const DropDown = <T extends string>({ list, onSelect, listType }: IProp<T>) => {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState<T | string>("" as T);
-
+  const [value, setValue] = React.useState<T | null | string>(null);
   return (
     <Popover
       open={open}

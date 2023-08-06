@@ -1,21 +1,26 @@
-"use client";
-import React from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Database } from "@/app/lib/interfaces/schema";
+import Profile from "../components/Profile";
+
+export type ProfileRow = Database["public"]["Tables"]["profiles"]["Row"];
 
 const page = async () => {
-  const supabase = createClientComponentClient();
+  const supabase = createServerComponentClient<Database>({ cookies: cookies });
+  const userID = (await supabase.auth.getUser()).data.user?.id;
+  const profileData = (
+    await supabase.from("profiles").select("*").eq("id", userID)
+  ).data;
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { publicUrl },
+  } = supabase.storage.from("avatars").getPublicUrl(userID || "");
   return (
-    <div>
-      {JSON.stringify(user)}
-      <Link href="/auth/profile/update" passHref>
-        <Button>Update profile</Button>
-      </Link>
+    <div className="py-6 sm:px-0 px-4 w-full bg-secondary min-h-screen">
+      <Profile
+        imageURI={publicUrl}
+        profileData={profileData?.[0]}
+        userID={userID}
+      />
     </div>
   );
 };

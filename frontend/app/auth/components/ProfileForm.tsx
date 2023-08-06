@@ -17,26 +17,32 @@ import {
 import { Input } from "@/components/ui/input";
 import Datepicker from "react-tailwindcss-datepicker";
 import DropDown from "@/app/shared/dropdown/Index";
+import { User } from "@supabase/supabase-js";
 
 const FormSchema = z.object({
-  firstname: z.string({ required_error: "Firstname is required" }),
+  first_name: z.string({ required_error: "Firstname is required" }),
   dob: z.string({ required_error: "DOB is required" }),
-  lastname: z.string().optional(),
-  role: z.enum(["freelancer", "jobseeker", "company"], {
+  last_name: z.string().optional(),
+  role: z.enum(["FREELANCER", "JOBSEEKER", "ORG"], {
     required_error: "Role is required",
-    invalid_type_error: "Role must be either freelancer | jobseeker | company",
+    invalid_type_error: "Role must be either FREELANCER | JOBSEEKER | ORG",
   }),
+  user_name: z.string({ required_error: "Username is required" }),
 });
 
 export type IProfile = z.infer<typeof FormSchema>;
 
 interface IProp {
   update: (data: IProfile) => void;
+  profileData?: IProfile | null;
 }
 
-const ProfileUpdateForm = ({ update }: IProp) => {
+const ProfileUpdateForm = ({ update, profileData }: IProp) => {
   const form = useForm<IProfile>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      ...profileData,
+    },
   });
 
   const onSubmit = (data: IProfile) => update(data);
@@ -45,19 +51,18 @@ const ProfileUpdateForm = ({ update }: IProp) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="sm:w-2/3 sm:px-0 px-3 space-y-6"
+        className="sm:w-2/3 sm:px-0 px-3 space-y-4"
       >
         {/* firstname field */}
         <FormField
           control={form.control}
-          name="firstname"
+          name="first_name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Firstname</FormLabel>
               <FormControl>
                 <Input placeholder="Ram" {...field} />
               </FormControl>
-              <FormDescription>Please Enter your firstname</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -66,14 +71,27 @@ const ProfileUpdateForm = ({ update }: IProp) => {
         {/* lastname field */}
         <FormField
           control={form.control}
-          name="lastname"
+          name="last_name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Lastname</FormLabel>
               <FormControl>
                 <Input placeholder="Singh" {...field} />
               </FormControl>
-              <FormDescription>Enter your lastname.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* lastname field */}
+        <FormField
+          control={form.control}
+          name="user_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>User Name</FormLabel>
+              <FormControl>
+                <Input placeholder="user name" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -90,17 +108,16 @@ const ProfileUpdateForm = ({ update }: IProp) => {
                 <FormControl>
                   <div className="w-full">
                     <DropDown<typeof field.value>
-                      listType="Role"
+                      listType="role"
                       onSelect={(value) => field.onChange(value)}
                       list={[
-                        { value: "company", label: "company" },
-                        { value: "freelancer", label: "freelancer" },
-                        { value: "jobseeker", label: "jobseeker" },
+                        { value: "ORG", label: "organization" },
+                        { value: "FREELANCER", label: "freelancer" },
+                        { value: "JOBSEEKER", label: "jobseeker" },
                       ]}
                     />
                   </div>
                 </FormControl>
-                <FormDescription>What should we call you.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -134,15 +151,12 @@ const ProfileUpdateForm = ({ update }: IProp) => {
                     displayFormat="DD-MM-YYYY"
                   />
                 </FormControl>
-                <FormDescription>
-                  Enter you DOB in the format YYYY-MM-DD
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Update</Button>
       </form>
     </Form>
   );

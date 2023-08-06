@@ -9,53 +9,41 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      jobs: {
-        Row: {
-          content: Json | null
-          created_at: string | null
-          id: string
-        }
-        Insert: {
-          content?: Json | null
-          created_at?: string | null
-          id: string
-        }
-        Update: {
-          content?: Json | null
-          created_at?: string | null
-          id?: string
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           created_at: string | null
           dob: string | null
-          firstname: string | null
-          id: string
-          lastname: string | null
-          roles: Database["public"]["Enums"]["account_role"]
+          first_name: string
+          id: number
+          last_name: string | null
+          role: Database["public"]["Enums"]["role"]
+          user_name: string | null
+          userId: string | null
         }
         Insert: {
           created_at?: string | null
           dob?: string | null
-          firstname?: string | null
-          id: string
-          lastname?: string | null
-          roles?: Database["public"]["Enums"]["account_role"]
+          first_name: string
+          id?: number
+          last_name?: string | null
+          role?: Database["public"]["Enums"]["role"]
+          user_name?: string | null
+          userId?: string | null
         }
         Update: {
           created_at?: string | null
           dob?: string | null
-          firstname?: string | null
-          id?: string
-          lastname?: string | null
-          roles?: Database["public"]["Enums"]["account_role"]
+          first_name?: string
+          id?: number
+          last_name?: string | null
+          role?: Database["public"]["Enums"]["role"]
+          user_name?: string | null
+          userId?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "profiles_id_fkey"
-            columns: ["id"]
+            foreignKeyName: "profiles_userId_fkey"
+            columns: ["userId"]
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -69,7 +57,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      account_role: "freelancer" | "jobseeker" | "organization"
+      role: "FREELANCER" | "JOBSEEKER" | "ORG"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -16,13 +16,12 @@ import Loader from "@/app/shared/Loader";
 const Page = () => {
   const supabase = createClientComponentClient<Database>();
   const [authResponse, setAuthResponse] = useState<AuthResponse>();
-  const router = useRouter();
   const Register = async (details: ISignUp) => {
     try {
       const response = await toast.promise(
         supabase.auth.signUp({
-          email: "gauravvaishnav8690@gmail.com",
-          password: "this is my password",
+          email: details.email,
+          password: details.password,
           options: {
             emailRedirectTo: `${window.location.origin}/auth/verify`,
           },
@@ -32,6 +31,7 @@ const Page = () => {
           success: "A confirmation mail has been sent to your email address",
         }
       );
+      console.log(response)
       setAuthResponse(response);
     } catch (error) {
       if (error instanceof Error) {

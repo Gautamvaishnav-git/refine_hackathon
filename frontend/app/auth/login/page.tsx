@@ -1,18 +1,17 @@
 "use client";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import Login from "../components/login";
-import { ToastContainer, toast } from "react-toastify";
+import Login, { ILoginForm } from "../components/login";
+import { toast } from "react-toastify";
 
 const Page = () => {
   const supabase = createClientComponentClient();
   const router = useRouter();
-  const login = async () => {
+  const login = async (loginData: ILoginForm) => {
     const { data, error } = await toast.promise(
       supabase.auth.signInWithPassword({
-        email: "gauravvaishnav8690@gmail.com",
-        password: "this is my password",
+        email: loginData.email,
+        password: loginData.password,
       }),
       {
         pending: "You are logging in...",
@@ -20,7 +19,7 @@ const Page = () => {
     );
     if (error) {
       if (error?.message === "Invalid login credentials") {
-        toast.error("Invalid login credentials!");
+        toast.error(error?.message);
       } else if (error?.message === "Failed to fetch") {
         toast.error("Failed to fetch! please check network connection.");
       }
@@ -29,11 +28,7 @@ const Page = () => {
     }
   };
 
-  return (
-    <>
-      <Login login={login} />
-    </>
-  );
+  return <Login login={login} />;
 };
 
 export default Page;
