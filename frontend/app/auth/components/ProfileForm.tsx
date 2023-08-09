@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Field, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -14,13 +14,22 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+// import DropDown from "@/app/shared/dropdown/Index";
+import { User } from "@supabase/supabase-js";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@radix-ui/react-select";
 import { Input } from "@/components/ui/input";
 import Datepicker from "react-tailwindcss-datepicker";
+import Link from "next/link";
 import DropDown from "@/app/shared/dropdown/Index";
-import { User } from "@supabase/supabase-js";
 
 const FormSchema = z.object({
-  first_name: z.string({ required_error: "Firstname is required" }),
+  first_name: z.string({ required_error: "First Name is required" }),
   dob: z.string({ required_error: "DOB is required" }),
   last_name: z.string().optional(),
   role: z.enum(["FREELANCER", "JOBSEEKER", "ORG"], {
@@ -59,7 +68,7 @@ const ProfileUpdateForm = ({ update, profileData }: IProp) => {
           name="first_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Firstname</FormLabel>
+              <FormLabel>First Name</FormLabel>
               <FormControl>
                 <Input placeholder="Ram" {...field} />
               </FormControl>
@@ -104,20 +113,31 @@ const ProfileUpdateForm = ({ update, profileData }: IProp) => {
             name="role"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Select A role</FormLabel>
-                <FormControl>
-                  <div className="w-full">
-                    <DropDown<typeof field.value>
-                      listType="role"
-                      onSelect={(value) => field.onChange(value)}
-                      list={[
-                        { value: "ORG", label: "organization" },
-                        { value: "FREELANCER", label: "freelancer" },
-                        { value: "JOBSEEKER", label: "jobseeker" },
-                      ]}
-                    />
-                  </div>
-                </FormControl>
+                <FormLabel>Email</FormLabel>
+                <DropDown
+                  field={field}
+                  placeholder="Select Role"
+                  list={[
+                    {
+                      value: "FREELANCER",
+                      text: "Freelancer",
+                      id: "Freelancer",
+                    },
+                    {
+                      value: "JOBSEEKER",
+                      text: "Job Seeker",
+                      id: "JOBSEEKER",
+                    },
+                    {
+                      value: "ORG",
+                      text: "Organization",
+                      id: "ORG",
+                    },
+                  ]}
+                />
+                <FormDescription>
+                  Select A role for your profile.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

@@ -4,7 +4,7 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <header className="flex items-center w-full justify-between px-4 bg-secondary">
+    <header className="flex items-center w-full justify-between px-4 bg-secondary sticky top-0 z-[9999]">
       <h2 className="text-xl font-bold text-secondary-foreground">logo</h2>
       <div>
         <div className="flex items-center gap-3">

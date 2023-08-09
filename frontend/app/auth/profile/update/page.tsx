@@ -15,7 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { User2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import usePost from "@/app/lib/hooks/usePost.hook";
 
 const Page = () => {
   const supabase = createClientComponentClient<Database>();
@@ -28,17 +28,20 @@ const Page = () => {
    * set the user data into the user state
    * @param null
    */
-  const userDataSetter = async () => {
+  const AuthUserDataSetter = async () => {
     let user = (await supabase.auth.getUser()).data.user;
     user && setUser(user);
   };
 
-  const {
-    data: { publicUrl },
-  } = supabase.storage.from("avatars").getPublicUrl(user?.id || "");
+  const { data } = supabase.storage
+    .from("avatars")
+    .getPublicUrl(user?.id || "");
+  const { publicUrl } = data;
+
   const updateProfile = async (data: IProfile) => {
+    console.log(data);
+    console.log(image)
     try {
-      const userID = (await supabase.auth.getUser()).data.user?.id || "";
       const inserted = await supabase
         .from("profiles")
         .update({
@@ -48,9 +51,11 @@ const Page = () => {
           roles: data.role,
           username: data.user_name,
         })
-        .eq("id", userID);
+        .eq("id", user?.id);
       const { data: imageData, error } = await toast.promise(
-        supabase.storage.from("avatars").upload(userID, image?.item(0) as Blob),
+        supabase.storage
+          .from("avatars")
+          .upload(String(user?.id), image?.item(0) as Blob),
         {
           pending: "Uploading image...",
         }
@@ -69,7 +74,8 @@ const Page = () => {
     }
   };
 
-  const profileDataSetter = async () => {
+  /** ***set profile data of user*** */
+  const supabaseProfileData = async () => {
     const { data } = await supabase
       .from("profiles")
       .select("*")
@@ -88,8 +94,8 @@ const Page = () => {
   };
 
   useEffect(() => {
-    userDataSetter();
-    profileDataSetter();
+    AuthUserDataSetter();
+    supabaseProfileData();
 
     if (image && image.length > 0) {
       const reader = new FileReader();

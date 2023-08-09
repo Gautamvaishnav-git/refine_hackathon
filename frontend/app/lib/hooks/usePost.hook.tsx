@@ -1,18 +1,30 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {
+  Axios,
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from "axios";
+import { toast } from "react-toastify";
 
-interface IProp<T> {
-  body: T;
+interface IProp {
   endPoint: string;
-  config: AxiosRequestConfig;
+  config?: AxiosRequestConfig;
 }
 
-const usePost = <TData, TBody>({ body, endPoint, config }: IProp<TBody>) => {
-  const response = useMutation<AxiosResponse<TData>>({
-    mutationFn: async () => {
-      const response = await axios.post<TData>(endPoint, body, { ...config });
+const usePost = <TData, TBody = object>({ endPoint, config }: IProp) => {
+  const response = useMutation<AxiosResponse<TData>, unknown, { body: TBody }>({
+    mutationFn: async ({ body }) => {
+      const response = await axios.post<TData>(endPoint, body, {
+        ...config,
+      });
       return response;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.message);
+      }
     },
   });
   return response;
