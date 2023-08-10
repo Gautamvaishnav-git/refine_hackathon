@@ -40,18 +40,22 @@ const Page = () => {
 
   const updateProfile = async (data: IProfile) => {
     console.log(data);
-    console.log(image)
+    console.log(image);
     try {
-      const inserted = await supabase
-        .from("profiles")
-        .update({
-          firstname: data.first_name,
-          lastname: data.last_name,
-          dob: data.dob,
-          roles: data.role,
-          username: data.user_name,
-        })
-        .eq("id", user?.id);
+      const exist = await supabase.from("profiles").select("*").single();
+      console.log(exist);
+      // exist.data?.userId
+      // const inserted = await supabase
+      //   .from("profiles")
+      //   .update({
+      //     first_name: data.first_name,
+      //     last_name: data.last_name,
+      //     dob: data.dob,
+      //     role: data.role,
+      //     user_name: data.user_name,
+      //     userId: user?.id,
+      //   })
+      //   .eq("userId", user?.id);
       const { data: imageData, error } = await toast.promise(
         supabase.storage
           .from("avatars")
@@ -108,8 +112,8 @@ const Page = () => {
   }, [image]);
   return (
     <>
-      <section className="flex justify-center w-full pb-8">
-        <div className="lg:w-1/2 md:w-2/3 sm:w-2/3 w-full pt-8 flex flex-col items-center">
+      <section className="flex justify-center w-full pb-8 bg-gradient-to-br via-purple-100/20 from-primary/20 pt-8 to-secondary">
+        <div className="lg:w-1/2 md:w-2/3 sm:w-2/3 w-full pt-8 pb-6 flex flex-col items-center bg-white/20 backdrop-blur-sm shadow-lg shadow-gray-300/10 border border-primary/20 rounded">
           <div className="flex w-full justify-center">
             <TooltipProvider>
               <Tooltip>
