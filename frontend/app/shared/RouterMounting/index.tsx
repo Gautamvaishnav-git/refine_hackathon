@@ -1,16 +1,18 @@
 "use client";
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 
 interface IProp {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }
 
-const Index = ({ children }: IProp) => {
-  const [mounted, setMounted] = React.useState(false);
-  useEffect(() => setMounted(true), []);
+const Index = ({children}: IProp) => {
+    const [mounted, setMounted] = React.useState(false);
+    useEffect(() => setMounted(true), []);
 
-  if (!mounted) return null;
-  return <>{children}</>;
+    if (!mounted) return null;
+    return <>
+            {children}
+    </>;
 };
 
 export default Index;

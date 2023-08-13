@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 import Card from "./Card";
+import jobs from "@/jobs.json";
 
 const Projects = () => {
   return (
     <div className="w-full p-2 space-y-4">
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
-        <Card key={item} />
+      {jobs.slice(0, 10).map((job) => (
+        <Card key={job.id} projectId={job.id} {...job} />
       ))}
     </div>
   );

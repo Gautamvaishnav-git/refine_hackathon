@@ -1,14 +1,16 @@
+import { ModeToggle } from "@/components/ui/switchTheme";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { Button } from "react-day-picker";
 
 const Navbar = () => {
   return (
-    <header className="flex items-center w-full justify-between px-4 bg-secondary sticky top-0 z-[9999]">
+    <header className="flex items-center w-full justify-between px-4 bg-secondary py-4 sticky top-0 z-[189]">
       <h2 className="text-xl font-bold text-secondary-foreground">logo</h2>
       <div>
         <div className="flex items-center gap-3">
-          <Link className="font-medium text-secondary-foreground" href="/freelance/dashboard">
+          <Link className="font-medium text-secondary-foreground dark:white" href="/freelance/dashboard">
             Dashboard
           </Link>
           <Link className="font-medium text-secondary-foreground" href="/freelance/projects">
@@ -22,13 +24,7 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
-      <Image
-        src={"/images/usericon.webp"}
-        alt="user icon"
-        width={100}
-        height={100}
-        className="rounded-full w-14"
-      />
+      <ModeToggle />
     </header>
   );
 };

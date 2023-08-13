@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import Projects from "./projects/index";
+import Projects from "@/app/projects/index";
 import SideBar from "./sidebar";
 
 const Wrapper = () => {

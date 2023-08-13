@@ -10,7 +10,7 @@ import { ISignUp } from "../components/signup";
 import Link from "next/link";
 import { AuthResponse } from "@supabase/supabase-js";
 import { Mail } from "lucide-react";
-import { Database } from "@/app/lib/interfaces/schema";
+import { Database } from "@/lib/interfaces/schema";
 import Loader from "@/app/shared/Loader";
 
 const Page = () => {

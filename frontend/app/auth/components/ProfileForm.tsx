@@ -5,28 +5,16 @@ import { Field, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 // import DropDown from "@/app/shared/dropdown/Index";
 import { User } from "@supabase/supabase-js";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@radix-ui/react-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import { Input } from "@/components/ui/input";
 import Datepicker from "react-tailwindcss-datepicker";
 import Link from "next/link";
 import DropDown from "@/app/shared/dropdown/Index";
+import { useEffect, useState } from "react";
+import profile from "@/app/auth/components/Profile";
 
 const FormSchema = z.object({
   first_name: z.string({ required_error: "First Name is required" }),
@@ -43,7 +31,7 @@ export type IProfile = z.infer<typeof FormSchema>;
 
 interface IProp {
   update: (data: IProfile) => void;
-  profileData?: IProfile | null;
+  profileData?: Partial<IProfile> | null;
 }
 
 const ProfileUpdateForm = ({ update, profileData }: IProp) => {
@@ -58,10 +46,7 @@ const ProfileUpdateForm = ({ update, profileData }: IProp) => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="sm:w-2/3 sm:px-0 px-3 space-y-4"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="sm:w-2/3 sm:px-0 px-3 space-y-6">
         {/* firstname field */}
         <FormField
           control={form.control}
@@ -99,7 +84,7 @@ const ProfileUpdateForm = ({ update, profileData }: IProp) => {
             <FormItem>
               <FormLabel>User Name</FormLabel>
               <FormControl>
-                <Input placeholder="user name" {...field} />
+                <Input disabled={profileData?.user_name ? true : false} placeholder="user name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -135,9 +120,6 @@ const ProfileUpdateForm = ({ update, profileData }: IProp) => {
                     },
                   ]}
                 />
-                <FormDescription>
-                  Select A role for your profile.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -157,15 +139,13 @@ const ProfileUpdateForm = ({ update, profileData }: IProp) => {
                     useRange={false}
                     popoverDirection="up"
                     value={{ endDate: field.value, startDate: field.value }}
-                    onChange={(value) =>
-                      field.onChange(String(value?.startDate))
-                    }
+                    onChange={(value) => field.onChange(String(value?.startDate))}
                     startFrom={new Date("2002-05-01")}
                     maxDate={new Date()}
                     primaryColor={"blue"}
                     classNames={{
                       input(p) {
-                        return "w-full h-10 border border-gray-300 rounded-md px-2 text-sm outline-none focus:border-primary";
+                        return "w-full h-10 border border-gray-300 rounded-md px-2 text-sm outline-none focus:border-primary dark:bg-background";
                       },
                     }}
                     displayFormat="DD-MM-YYYY"
